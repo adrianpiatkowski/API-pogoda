@@ -17,6 +17,7 @@ public class MainApp implements Runnable {
     private String idMiasta;
     private String lat;
     private String lon;
+    private String cnt;
 
     private void startApp() {
         scanner = new Scanner(System.in);
@@ -53,7 +54,15 @@ public class MainApp implements Runnable {
                 connectByCoord();
                 startApp();
                 break;
-                
+
+            case 4:
+                System.out.println("Podaj nazwe miasta");
+                city = scanner.next();
+                System.out.printf("Podaj ilosć dni");
+                cnt = scanner.next();
+                connectByCityForXDays();
+                startApp();
+                break;
         }
     }
 
@@ -156,7 +165,25 @@ public class MainApp implements Runnable {
         }
         return response;
     }
-//api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={your api key}
+
+    private void connectByCityForXDays(){
+        try {
+            String response = new HttpService().connect( Config.APP_URL+"q="+city+"&cnt="+cnt +"&appid="+Config.APP_ID);
+            parseJson(response);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //api.openweathermap.org/data/2.5/forecast/daily?q={city name},{state}&cnt={cnt}&appid={your api key}
+
+    private void parseJsonForXDays(String json){
+        JSONObject jsonObject = new JSONObject(json);
+        JSONObject jsonArrayPogoda = jsonObject.getJSONObject("main");
+
+
+    }
+
     @Override
     public void run() {
         startApp();
