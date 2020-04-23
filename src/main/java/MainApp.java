@@ -67,10 +67,7 @@ public class MainApp implements Runnable {
                 break;
             case 5:
                 liczbaDni();
-                System.out.println("Podaj nazwe miasta");
-                city = scanner.next();
-                connectLongByCityName();
-                startApp();
+
                 break;
 
         }
@@ -78,7 +75,17 @@ public class MainApp implements Runnable {
     private void liczbaDni(){
         System.out.println("Podaj na ile chcesz wyswietlic pogode, zakres 1-5");
       int dni = scanner.nextInt();
+      if(dni<5&&dni>0){
       this.dni=dni;
+          System.out.println("Podaj nazwe miasta");
+          city = scanner.next();
+          connectLongByCityName();
+          startApp();
+      }
+      else{
+          System.out.println("Wprowadziles zla ilosc dni");
+          startApp();
+              }
     }
     public String liczbaDni(int dni, String miasto){
         this.dni=dni;
