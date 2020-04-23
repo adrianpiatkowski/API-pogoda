@@ -20,6 +20,24 @@ public class MainAppTest {
         }
         Assertions.assertTrue(rootObject.getInt("cod") == 200);
     }
+
+    @Test
+    @DisplayName("Główny test połączenia")
+    @Tag("dev")
+    void connectionTestLong() {
+        HttpService HttpService = new HttpService();
+        JSONObject rootObject = null;
+        try {
+
+           String response = HttpService.connect(Config.APP_URL_DAILY + "Grojec"+"&units=metric&appid="+Config.APP_ID);
+            rootObject = new JSONObject(response);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertTrue(rootObject.getInt("cod") == 200);
+    }
+
     @Test
     @DisplayName("Test pogody dla miasta Warszawa")
     void connectByCityNameTest() {
@@ -29,6 +47,7 @@ public class MainAppTest {
         Assertions.assertEquals(200, jsonObject.getInt("cod"));
         Assertions.assertEquals("Warsaw", jsonObject.getString("name"));
     }
+
     @Test
     @DisplayName("Test pogody dla Wwa przez zip code")
     void connectByZipCodeTest(){
@@ -51,11 +70,17 @@ public class MainAppTest {
     }
 
     @Test
-    @Disabled("Nie została obsłużona")
-    void parseJsonForXDaysTest() {
-        //TODO
+    @DisplayName("Test pogody dla Grojca , liczba dni")
+    void connectByCityLong(){
+        MainApp mainApp = new MainApp();
 
+        String responseTest = mainApp.liczbaDni(2,"Grojec");
+        JSONObject jsonObject = new JSONObject(responseTest);
+        JSONObject jsonObject1 = jsonObject.getJSONObject("city");
+        Assertions.assertEquals(200, jsonObject.getInt("cod"));
+        Assertions.assertEquals("Grójec", jsonObject1.getString("name"));
     }
+
     @AfterAll
     static void done() {
         System.out.println("Zakończenie testów");

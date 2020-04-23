@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="API pogoda 22.04" />
         <module name="ApiWeather" />
+        <module name="API-pogoda" />
         <module name="ApiWeather2" />
         <module name="ApiWeather1" />
       </profile>

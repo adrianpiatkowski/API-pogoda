@@ -18,10 +18,12 @@ public class MainApp implements Runnable {
     private String lat;
     private String lon;
     private String cnt;
+    private double dni;
+    private String miasto1;
 
     private void startApp() {
         scanner = new Scanner(System.in);
-        System.out.println("Wybierz po czym chcesz znaleźć miejsce dla którego wyświetlisz pogodę \n0 - Zakończ działanie \n1 - Nazwa Miasta \n2 - Kod pocztowy");
+        System.out.println("Wybierz po czym chcesz znaleźć miejsce dla którego wyświetlisz pogodę \n0 - Zakończ działanie \n1 - Nazwa Miasta \n2 - Kod pocztowy \n5 - Pogoda dlugoterminowa");
         Integer name = scanner.nextInt();
         chooseTypeSearching(name);
     }
@@ -63,7 +65,50 @@ public class MainApp implements Runnable {
                 connectByCityForXDays();
                 startApp();
                 break;
+            case 5:
+                liczbaDni();
+                System.out.println("Podaj nazwe miasta");
+                city = scanner.next();
+                connectLongByCityName();
+                startApp();
+                break;
+
         }
+    }
+    private void liczbaDni(){
+        System.out.println("Podaj na ile chcesz wyswietlic pogode, zakres 1-5");
+      int dni = scanner.nextInt();
+      this.dni=dni;
+    }
+    public String liczbaDni(int dni, String miasto){
+        this.dni=dni;
+
+        return connectLongByCityName(miasto);
+    }
+
+    public String connectLongByCityName(String miasto1){
+        String response = null;
+        try {
+
+            response = new HttpService().connect(Config.APP_URL_DAILY + miasto1+"&units=metric&appid="+Config.APP_ID);
+            parseJsonDaily(response);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+return response;
+    }
+
+    private void connectLongByCityName() {
+        try {
+            String response = new HttpService().connect(Config.APP_URL_DAILY +city+"&units=metric&appid="+Config.APP_ID);
+            parseJsonDaily(response);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void connectByCityName() {
@@ -76,6 +121,44 @@ public class MainApp implements Runnable {
             e.printStackTrace();
         }
 
+    }
+    private void parseJsonDaily(String json) {
+        int humidity;
+        int pressure;
+        int clouds;
+        double wind;
+        String data;
+//        System.out.println("Podaj na ile chcesz wyswietlic pogode, zakres 1-5");
+//        int dni = scanner.nextInt();
+        JSONObject rootObject = new JSONObject(json);
+        if (rootObject.getInt("cod") == 200) {
+            JSONArray tablicaPogody = rootObject.getJSONArray("list");
+            List<Pogoda> pogoda1 = new ArrayList<>();
+            for(int i = 1 ; i<dni*8 ; i=i+8) {
+
+                Pogoda pogodaOBject = new Pogoda();
+
+                JSONObject one = (JSONObject) tablicaPogody.get(i);
+                JSONObject mainObject = one.getJSONObject("main");
+                pogodaOBject.setTemp(Double.parseDouble(mainObject.get("temp").toString()));
+
+                humidity = mainObject.getInt("humidity");
+                pogodaOBject.setHumidity(humidity);
+                pressure = mainObject.getInt("pressure");
+                pogodaOBject.setPressure(pressure);
+                JSONObject mainObject1 = one.getJSONObject("clouds");
+                clouds = mainObject1.getInt("all");
+                pogodaOBject.setClouds(clouds);
+                JSONObject mainObject2 = one.getJSONObject("wind");
+                wind = mainObject2.getDouble("speed");
+                pogodaOBject.setWind(wind);
+                data = one.get("dt_txt").toString();
+                pogodaOBject.setData(data);
+
+                pogoda1.add(pogodaOBject);
+            }
+            System.out.println(pogoda1);
+      }
     }
     public String connectByCityName(String miasto){
         String response = null;
