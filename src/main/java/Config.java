@@ -1,5 +1,5 @@
 public class Config {
-    //TODO uzupe³niæ
-    public static final String APP_ID = "YOUR_ID";
-    public static final String APP_URL = "";
+    //TODO uzupeï¿½niï¿½
+    public static final String APP_ID = "8eecb0a4485cbd22f52717cbac3cfed2";
+    public static final String APP_URL = "https://api.openweathermap.org/data/2.5/weather?";
 }
