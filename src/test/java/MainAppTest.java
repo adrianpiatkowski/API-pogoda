@@ -73,7 +73,6 @@ public class MainAppTest {
     @DisplayName("Test pogody dla Grojca , liczba dni")
     void connectByCityLong(){
         MainApp mainApp = new MainApp();
-
         String responseTest = mainApp.liczbaDni(2,"Grojec");
         JSONObject jsonObject = new JSONObject(responseTest);
         JSONObject jsonObject1 = jsonObject.getJSONObject("city");

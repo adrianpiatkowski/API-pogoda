@@ -15,11 +15,11 @@ public class Pogoda {
 
     @Override
     public String toString() {
-        return "\nData: " + data +
-        "\nTemperatura: " + temp +"[C]" +
-                "\nWilgotnosc: " + humidity+"%" +
-                "\nCisnienie: " + pressure +"hPa"+
-                "\nZachmurzenie: " + clouds+ "%" +
-                "\nWiatr: " + wind + "m/s\n";
+        return "Data: " + data +
+        " ,Temperatura: " + temp +"[C]" +
+                " ,Wilgotnosc: " + humidity+"%" +
+                " ,Cisnienie: " + pressure +"hPa"+
+                " ,Zachmurzenie: " + clouds+ "%" +
+                " ,Wiatr: " + wind + "m/s\n";
     }
 }

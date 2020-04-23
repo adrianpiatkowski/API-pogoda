@@ -75,7 +75,7 @@ public class MainApp implements Runnable {
     private void liczbaDni(){
         System.out.println("Podaj na ile chcesz wyswietlic pogode, zakres 1-5");
       int dni = scanner.nextInt();
-      if(dni<5&&dni>0){
+      if(dni<=5&&dni>0){
       this.dni=dni;
           System.out.println("Podaj nazwe miasta");
           city = scanner.next();
@@ -141,7 +141,7 @@ return response;
         if (rootObject.getInt("cod") == 200) {
             JSONArray tablicaPogody = rootObject.getJSONArray("list");
             List<Pogoda> pogoda1 = new ArrayList<>();
-            for(int i = 1 ; i<dni*8 ; i=i+8) {
+            for(int i = 0 ; i<dni*8 ; i=i+8) {
 
                 Pogoda pogodaOBject = new Pogoda();
 
